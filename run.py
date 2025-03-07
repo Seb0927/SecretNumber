@@ -45,6 +45,7 @@ while running:
         if event.type == pygame.KEYDOWN:
             if active:
                 if event.key == pygame.K_RETURN:
+                    # Check if the given value is a number
                     try:
                         int(text)
                     except ValueError:
@@ -56,6 +57,7 @@ while running:
                         text = ''
                         continue
 
+                    # Clues for the user
                     dif = abs(int(text) - secret)
                     if(abs(dif) > 1):
                         tries += 1
@@ -74,6 +76,7 @@ while running:
                         pygame.display.flip()
                         pygame.time.wait(2000)
 
+                    # Check if the user guessed the secret number
                     if(int(text) == secret):
                         tries += 1
                         label = small_font.render("¡Felicidades! ¡Adivinaste el número secreto!", True, BLACK)
