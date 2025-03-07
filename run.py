@@ -1,4 +1,5 @@
 import pygame
+import random
 import sys
 
 # Initialize Pygame
@@ -6,7 +7,10 @@ pygame.init()
 
 # Set up the display
 screen = pygame.display.set_mode((800, 600))
-pygame.display.set_caption("Adivina el Número Secreto")
+pygame.display.set_caption("Adivina el Número Secreto (entre 1 y 100)")
+
+secret = random.randint(1, 100)
+tries = 0
 
 # Define colors
 WHITE = (255, 255, 255)
@@ -41,8 +45,44 @@ while running:
         if event.type == pygame.KEYDOWN:
             if active:
                 if event.key == pygame.K_RETURN:
-                    print(text)  # Placeholder for logic
+                    try:
+                        int(text)
+                    except ValueError:
+                        label = small_font.render("Por favor, introduce un número entre 1 y 100.", True, BLACK)
+                        label_rect = label.get_rect(center=(screen.get_width()/2, screen.get_height()/2 + 50))
+                        screen.blit(label, label_rect)
+                        pygame.display.flip()
+                        pygame.time.wait(2000)  # Wait for 2 seconds to show the message
+                        text = ''
+                        continue
+
+                    dif = abs(int(text) - secret)
+                    if(abs(dif) > 1):
+                        tries += 1
+                        if(dif > 50):
+                            label = small_font.render("¡Muy frío!", True, BLACK)
+                        elif(dif > 30):
+                            label = small_font.render("¡Frío!", True, BLACK)
+                        elif(dif > 15):
+                            label = small_font.render("¡Caliente!", True, BLACK)
+                        elif(dif > 10):
+                            label = small_font.render("¡Muy caliente!", True, BLACK)
+                        else:
+                            label = small_font.render("¡Hirviendo!", True, BLACK)
+                        label_rect = label.get_rect(center=(screen.get_width()/2, screen.get_height()/2 + 50))
+                        screen.blit(label, label_rect)
+                        pygame.display.flip()
+                        pygame.time.wait(2000)
+
+                    if(int(text) == secret):
+                        tries += 1
+                        label = small_font.render("¡Felicidades! ¡Adivinaste el número secreto!", True, BLACK)
+                        label_rect = label.get_rect(center=(screen.get_width()/2, screen.get_height()/2 + 50))
+                        screen.blit(label, label_rect)
+                        pygame.display.flip()
+                        pygame.time.wait(2000)  # Wait for 2 seconds to show the message
                     text = ''
+
                 elif event.key == pygame.K_BACKSPACE:
                     text = text[:-1]
                 else:
@@ -61,8 +101,11 @@ while running:
     pygame.draw.rect(screen, color, input_box, 2)
 
     # Display instructions
-    instructions = small_font.render("Adivina el número secreto:", True, BLACK)
-    screen.blit(instructions, (250, 200))
+    instructions = small_font.render("Adivina el número secreto (entre 1 y 100):", True, BLACK)
+    screen.blit(instructions, (180, 200))
+
+    tries_label = small_font.render("Intentos: " + str(tries), True, BLACK)
+    screen.blit(tries_label, (330, 380))
 
     pygame.display.flip()
 
