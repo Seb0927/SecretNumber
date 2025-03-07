@@ -15,7 +15,6 @@ tries = 0
 
 # Define colors
 WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
 
 # Set up fonts
 font = pygame.font.Font(None, 74)
@@ -50,16 +49,17 @@ while running:
                     try:
                         int(text)
                     except ValueError:
+                        label = small_font.render("Por favor, introduce un número entre 1 y 100.", True, WHITE)
                         label_rect = label.get_rect(center=(screen.get_width()/2, screen.get_height()/2 + 50))
                         screen.blit(label, label_rect)
                         pygame.display.flip()
-                        pygame.time.wait(2000)  # Wait for 2 seconds to show the message
+                        pygame.time.wait(1000)  # Wait for 2 seconds to show the message
                         text = ''
                         continue
 
                     # Clues for the user
                     dif = abs(int(text) - secret)
-                    if(abs(dif) > 1):
+                    if(abs(dif) >= 1):
                         tries += 1
                         if(dif > 50):
                             label = small_font.render("¡Muy frío!", True, WHITE)
@@ -74,7 +74,7 @@ while running:
                         label_rect = label.get_rect(center=(screen.get_width()/2, screen.get_height()/2 + 50))
                         screen.blit(label, label_rect)
                         pygame.display.flip()
-                        pygame.time.wait(2000)
+                        pygame.time.wait(1000)
 
                     # Check if the user guessed the secret number
                     if(int(text) == secret):
@@ -83,7 +83,7 @@ while running:
                         label_rect = label.get_rect(center=(screen.get_width()/2, screen.get_height()/2 + 50))
                         screen.blit(label, label_rect)
                         pygame.display.flip()
-                        pygame.time.wait(2000)  # Wait for 2 seconds to show the message
+                        pygame.time.wait(1000)  # Wait for 2 seconds to show the message
                     text = ''
 
                 elif event.key == pygame.K_BACKSPACE:
